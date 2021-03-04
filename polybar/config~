@@ -18,13 +18,13 @@
 
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #222
-background-alt = #444
+background = #544C48
+background-alt = #FFCE51
 ;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
-foreground-alt = #555
+foreground-alt = #FFCE51
 primary = #ffb52a
-secondary = #e60053
+secondary = #a60053
 alert = #bd2c40
 
 [bar/example]
@@ -43,7 +43,8 @@ line-size = 3
 line-color = #f00
 
 border-size = 4
-border-color = #00000000
+border-bottom-size = 0
+border-color = #0000000
 
 padding-left = 0
 padding-right = 2
@@ -51,20 +52,19 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-;font-0 = fixed:pixelsize=10;1
-font-0 = xos4 Terminus:pixelsize=10;
-font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = siji:pixelsize=10;1
+font-0 = xos4 Terminus:pixelsize=14;1
+font-1 = unifont:fontformat:size=8:antialias=false;0
+font-2 = siji:pixelsize=12;1
 
-modules-left = bspwm i3
-modules-center = xwindow
-modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
+modules-left = bspwm
+modules-center = mpd xwindow
+modules-right = filesystem xbacklight pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
 
 tray-position = right
 tray-padding = 2
 ;tray-background = #0063ff
 
-;wm-restack = bspwm
+wm-restack = bspwm
 ;wm-restack = i3
 
 ;override-redirect = true
@@ -80,7 +80,15 @@ cursor-scroll = ns-resize
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+label = %title%
+label-maxlen = 35
+
+;format-prefix = ""
+format-prefix-underline = #0FE35D
+format-underline = #0000000
+;format-foreground = #16A085
+format-foreground = #ffce51
+format-background = ${colors.background}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -113,7 +121,8 @@ type = internal/bspwm
 
 label-focused = %index%
 label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
+label-focused-underline= ${colors.background-alt}
+label-focused-foreground= ${colors.background}
 label-focused-padding = 2
 
 label-occupied = %index%
@@ -130,46 +139,15 @@ label-empty-padding = 2
 ; Separator in between workspaces
 ; label-separator = |
 
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
-
-; Only show workspaces on the same output as the bar
-;pin-workspaces = true
-
-label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
-
-; focused = Active workspace on focused monitor
-label-focused = %index%
-label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
-label-focused-padding = 2
-
-; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
-label-unfocused-padding = 2
-
-; visible = Active workspace on unfocused monitor
-label-visible = %index%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-label-urgent = %index%
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
-
-; Separator in between workspaces
-; label-separator = |
-
-
 [module/mpd]
 type = internal/mpd
+
+host= 127.0.0.1
+port = 6600
+password = wilson123
+
+interval = 1
+
 format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
 icon-prev = 
@@ -383,12 +361,13 @@ ramp-foreground = ${colors.foreground-alt}
 [module/powermenu]
 type = custom/menu
 
-expand-right = true
+;expand-right = true
 
 format-spacing = 1
 
 label-open = 
-label-open-foreground = ${colors.secondary}
+;label-open-foreground = ${colors.secondary}
+label-open-foreground = #f4f4f4
 label-close =  cancel
 label-close-foreground = ${colors.secondary}
 label-separator = |
@@ -402,10 +381,10 @@ menu-0-1-exec = menu-open-2
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
 menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = shutdown -r now
 
 menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
+menu-2-0-exec = shutdown -h now
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
 
